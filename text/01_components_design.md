@@ -1,7 +1,7 @@
 # Vue.jsで考えるコンポーネント設計
 
 ## 0 はじめに
-
+
 Vue.jsなどのコンポーネントを用いたフロントエンド開発においてコンポーネント設計は必要不可欠です。コンポーネント設計とは、コンポーネントをどのような粒度で、どのような状態で分割してページを構成していくのかを設計することです。
 
 適切にコンポーネント設計をせずに開発を進めると以下のような弊害が生じる可能性があります。
@@ -36,11 +36,11 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 
 ### 1.1 Presentational and Container Components パターン
 
-<a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">Presentational and Container Components</a> パターンは、Facebook社ReactチームのソフトウェアエンジニアであるDan Abramov氏が考案したコンポーネント設計手法です。コンポーネントを役割毎に **Presentational Component** と **Container Component** の2つに分けて管理、開発します。Reactの設計パターンですが、Vue.jsに適用すると以下のように解釈できます。
+<a href="https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0">Presentational and Container Components</a> パターンは、Facebook社ReactチームのソフトウェアエンジニアであるDan Abramov氏が考案したコンポーネント設計手法です。コンポーネントを役割毎に **Presentational Component** と **Container Component** の2つに分けてUIを構成します。Reactの設計パターンとして考案されたものですが、Vue.jsに適用すると以下のように解釈できます。
 
 <br>
 
-**【Presentational Component】**
+####Presentational Component
 
 - 見た目に関する責務を負う。
 - 子要素としてPresentational ComponentやContainer Componentを持つことができる。
@@ -49,9 +49,9 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 - 状態を持つことはない（持ったとしても自身のUIに関する状態のみ）。
 - 自分以外（StoreやVue Routerなどの機能）に依存しない。
 
-**【Container Component】**
+####Container Component
 
-- コンポーネントの振る舞いに関する責務を負う。
+- コンポーネントの振る舞い（ロジック）に関する責務を負う。
 - 子要素としてPresentational ComponentやContainer Componentを持つことができる。
 - マークアップやスタイルは原則書かない。
 - データおよびデータを扱うための関数をPresentational Componentに渡す。
@@ -66,3 +66,38 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 > Vue.jsでは、親から子へデータを渡すのにpropsを、子から親へ処理を依頼するのに$emitを使用します。Container Componentで用意したデータをprops経由でPresentational Componentに渡し、Presentational Componentで入力などのイベントが発生したら$emitで上位のContainer Componentに処理を依頼するといった流れになります。
 
 <img src="../img/01-01.png">
+
+<br>
+
+#### 利点
+
+- UI部分と振る舞い部分を明確に分離できる。
+- 振る舞いに依存しないため再利用性が高くなる。
+- デザイナーが振る舞い部分（ロジック）に干渉することなく修正できるため分業しやすくなる。
+
+#### 課題
+
+見た目と振る舞いの2種類では分割の粒度が粗く、ユニットテストがしづらくなる可能性があります。また、プロジェクトのディレクトリ構成においても粒度の異なるコンポーネントが同一ディレクトリに配置され、コンポーネントファイルを探しづらくなるかもしれません。
+
+<br><br>
+
+### 1.2 Atomic Design パターン
+
+<a href="https://atomicdesign.bradfrost.com/">Atomic Design</a> パターンは、アメリカのWebデザイナーであるBrad Frost氏が考案したデザインシステムです。あくまでもデザインの設計思想であり、フロントエンドの実装向けに考案されたものではありません。フロントエンド開発におけるAtomic Designでは、画面要素を5段階に分け、これらの要素を組み合わせることでUIを構成していきます。画面要素の5段階を「原子」や「分子」といった化学用語で表現し、それぞれコンポーネントの粒度を表します。
+
+<img src="../img/01-02.png" width="700">
+
+<br><br>
+
+#### 1) Atom
+
+<table>
+<tr>
+<td>
+最も小さい粒度であり、それ以上分解できない要素です。デザインシステムで最も基本的なデザインパーツです。リンクやテキストボックス、ボタンなどのUIパーツが該当します。
+</td>
+<td>
+<img src="../img/01-02.png" width="800">
+</td>
+</tr>
+</table>
