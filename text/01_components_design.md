@@ -232,7 +232,7 @@ Presentational and Container ComponentsパターンやAtomic Designパターン�
 |:-------------|:----|
 | Container Component | ● Atomic DesignのPagesに相当<br>● API通信、Storeへのアクセスができる唯一のコンポーネント<br>● 複数のPresentational ComponentやContainer Componentを束ねる |
 | Presentational Component | ● Atomic DesignのTemplates、Organismsに相当<br>● 与えられたプロパティを表示するだけのコンポーネント<br>● Container Componentとはディレクトリを分けず、名前で区別する |
-| Common Presentational Component | ● Atomic DesignのTemplates、Organisms、Moleculesに相当<br>● Presentational Componentの中で、アプリケーションの内部で頻出するデザインのパターンを定義する<br>　ヘッダーやパンくずリストなど<br>● 具体的なコンテキストがない抽象的で使い回しができるコンポーネント群 |
-| Atom Component | Atomic DesignのMolecules、Atomsに相当<br>● サービス全体で流用できるような小さいコンポーネント群<br>● フォーム部品やボタンなどの利用頻度が高いもの<br>● スタイルの局所的な上書きを許容できるようにScoped CSS / CSS Modulesは使わない<br>● コンポーネント外との関係を決めるスタイルは適用しない　例）margin、float、z-indexなど |
+| Common Presentational Component | ● Atomic DesignのTemplates、Organisms、Moleculesに相当<br>● Presentational Componentの中で、アプリケーションの内部で頻出するデザインのパターンを定義する（ヘッダーやパンくずリストなど）<br>● 具体的なコンテキストがない抽象的で使い回しができるコンポーネント群 |
+| Atom Component | ● Atomic DesignのMolecules、Atomsに相当<br>● サービス全体で流用できるような小さいコンポーネント群<br>● フォーム部品やボタンなどの利用頻度が高いもの<br>● スタイルの局所的な上書きを許容できるようにScoped CSS / CSS Modulesは使わない<br>● コンポーネント外との関係を決めるスタイルは適用しない　例）margin、float、z-indexなど |
 
 <img src="../img/02-01.png">
