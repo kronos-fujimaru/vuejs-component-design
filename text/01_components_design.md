@@ -25,7 +25,7 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 
 <br>
 
-## 1 フロントエンド開発におけるコンポーネント設計手法
+## 1 フロントエンド開発におけるコンポーネント設計
 
 まずはフロントエンド開発の現場で採用されている設計手法を見ていきます。主な設計手法として以下の2つがあります。
 
@@ -67,8 +67,6 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 
 <img src="../img/01-01.png">
 
-<br>
-
 #### 利点
 
 - UI部分と振る舞い部分を明確に分離できる。
@@ -86,6 +84,8 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 <a href="https://atomicdesign.bradfrost.com/">Atomic Design</a> パターンは、アメリカのWebデザイナーであるBrad Frost氏が考案したデザインシステムです。あくまでもデザインの設計思想であり、フロントエンドの実装向けに考案されたものではありません。フロントエンド開発におけるAtomic Designでは、画面要素を5つのレベルに分け、これらの要素を組み合わせることでUIを構成していきます。各レベルを「原子」や「分子」といった化学用語で表現し、それぞれコンポーネントの粒度を表します。
 
 <img src="../img/01-02.png">
+<span style="font-size:9pt">画像引用元：<a href="https://atomicdesign.bradfrost.com/chapter-2/">Atomic Design Methodology</a></span>
+
 
 <br><br>
 
@@ -93,7 +93,7 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
 <tr>
     <th>#</th>
     <th>レベル</th>
-    <th width="500">説明</th>
+    <th width="500">概要</th>
     <th>イメージ図</th>
 </tr>
 <tr>
@@ -132,7 +132,7 @@ Vue.jsなどのコンポーネントを用いたフロントエンド開発に�
     Organisms<br>（有機体、生体）
     </td>
     <td>
-    AtomsとMoleculesの組み合わせで構成されるUIパーツです。<br>Moleculesとの違いは、<strong>独立して機能する</strong>デザインパーツであることです。<br>例えば、広告バナーやコメント投稿フォームは、どのページにそのまま配置しても機能として成り立つため独立していると言えます。
+    AtomsとMoleculesの組み合わせで構成されるUIパーツです。<br>Moleculesとの違いは、<strong>独立して機能する</strong>デザインパーツであることです。<br>例えば、ヘッダーや広告バナー、コメント投稿フォームは、どのページにそのまま配置しても機能として成り立つため独立していると言えます。
     </td>
     <td>
     <img src="../img/01-05.png">
@@ -209,3 +209,30 @@ componentsディレクトリは内包するAtoms、Molecules、Organismsでデ�
 - Atomic Designの設計思想に厳格に合わせようとすると、逆に構造が複雑化し、メンテナンス性が悪くなる可能性があります。チームやアプリケーションに合わせて独自の構造や仕組みを取り入れることも重要になります。
 - 対象のコンポーネントを Molecules と Organisms のどちらに含めていいかわからなくなる、もしくは開発メンバー間で認識がズレることが往々にしてあります。振り分けの目安の1つに、前述の「独立して機能する」かどうかがありますが、チーム内で明確に認識合わせをしておくといいでしょう。
 - コンポーネント間のデータや処理のやり取り（propsや$emit）がバケツリレーのように発生し、面倒になり得ます。頻繁にやり取りするデータはStoreに保持するなど、Storeの設計も考慮した方がいいかもしれません。
+
+<br>
+
+## 2 コンポーネント設計の応用
+
+Presentational and Container ComponentsパターンやAtomic Designパターンを導入することで開発効率の向上が見込めそうですが、プロジェクトや開発メンバーの特色によっては設計パターンがマッチしない可能性もあります。そのため、自分たちの環境に合わせて開発パターンをカスタマイズすることを検討してみてもいいかもしれません。
+
+前述の設計パターンに独自の仕組みを取り入れた応用例もいくつかあります。
+
+<br>
+
+#### 応用例（BASE）
+
+「ネットでお店を開くなら〜BASE♪」のCMで知られているBASEは、元々PHPによるサーバーサイドレンダリング（SSR）でしたが、2018年からのリニューアルプロジェクトでVue.js＋TypeScriptによるクライアントサイドレンダリング（CSR）に移行しています。Vue.jsのコンポーネント設計では、コンポーネントを大きく4種類に分けています。
+
+元々はAtomic Designの思想を中心にしたコンポーネント設計からスタートしたが、Atomic Designの思想はWebアプリケーションのデザインを作る上では有効であるものの、実装という観点でいけばそれだけではうまくいかないのでは？という疑問にぶつかったそう。そこで、最終的に**Presentational and Container Component**の思想を基準とし、それぞれのコンポーネントのレイヤーをAtomic Designの語彙を取り入れながら分解した形式を取り入れました。
+
+コンポーネントを役割に応じて以下の4種類に分類します。
+
+| コンポーネント | 概要 |
+|:-------------|:----|
+| Container Component | ● Atomic DesignのPagesに相当<br>● API通信、Storeへのアクセスができる唯一のコンポーネント<br>● 複数のPresentational ComponentやContainer Componentを束ねる |
+| Presentational Component | ● Atomic DesignのTemplates、Organismsに相当<br>● 与えられたプロパティを表示するだけのコンポーネント<br>● Container Componentとはディレクトリを分けず、名前で区別する |
+| Common Presentational Component | ● Atomic DesignのTemplates、Organisms、Moleculesに相当<br>● Presentational Componentの中で、アプリケーションの内部で頻出するデザインのパターンを定義する<br>　ヘッダーやパンくずリストなど<br>● 具体的なコンテキストがない抽象的で使い回しができるコンポーネント群 |
+| Atom Component | Atomic DesignのMolecules、Atomsに相当<br>● サービス全体で流用できるような小さいコンポーネント群<br>● フォーム部品やボタンなどの利用頻度が高いもの<br>● スタイルの局所的な上書きを許容できるようにScoped CSS / CSS Modulesは使わない<br>● コンポーネント外との関係を決めるスタイルは適用しない　例）margin、float、z-indexなど |
+
+<img src="../img/02-01.png">
